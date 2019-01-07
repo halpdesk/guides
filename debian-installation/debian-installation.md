@@ -1,15 +1,17 @@
-# Debian 9.0 installation guide
+# Debian 9.5 installation guide
 
-## 1. What
+## 1. This document
 
-Installation guide for Debian 9 with standard Virtualmin setup
+This document is an installation guide for Debian 9.5 with standard Virtualmin setup.
+It takes approximatley two hours to complete.
 
 ### Revision history
 
-| Author          | Change            | Time       |
-|-----------------|-------------------|------------|
-| Daniel Leppänen | Minor updates     | 2018-11-11 |
-| Daniel Leppänen | First draft       | 2018-09-05 |
+| Author          | Change              | Time       |
+|-----------------|---------------------|------------|
+| Daniel Leppänen | Tested and updated  | 2019-01-06 |
+| Daniel Leppänen | Minor updates       | 2018-11-11 |
+| Daniel Leppänen | First draft         | 2018-09-05 |
 
 ## 2. Steps
 
@@ -22,13 +24,13 @@ Installation guide for Debian 9 with standard Virtualmin setup
 2. Edit **/etc/apt/sources.list** for main packages only:
 
     ```sh
-        # main packages
-        deb http://http.debian.net/debian stretch main contrib #non-free
-        deb-src http://http.debian.net/debian stretch main contrib #non-free
-        deb http://http.debian.net/debian stretch-updates main contrib #non-free
-        deb-src http://http.debian.net/debian stretch-updates main contrib #non-free
-        deb http://security.debian.org/ stretch/updates main contrib #non-free
-        deb-src http://security.debian.org/ stretch/updates main contrib #non-free
+    # main packages
+    deb http://http.debian.net/debian stretch main contrib #non-free
+    deb-src http://http.debian.net/debian stretch main contrib #non-free
+    deb http://http.debian.net/debian stretch-updates main contrib #non-free
+    deb-src http://http.debian.net/debian stretch-updates main contrib #non-free
+    deb http://security.debian.org/ stretch/updates main contrib #non-free
+    deb-src http://security.debian.org/ stretch/updates main contrib #non-free
     ```
 
     > **File:** /etc/apt/sources.list
@@ -58,7 +60,7 @@ See up-to-date installation structions here
 https://docs.docker.com/install/linux/docker-ce/debian/
 
 
-#### 2.2.3. PHP 7.2 (or later)
+#### 2.2.3. PHP 7.3 (or later)
 
 Available through ondrej/php PPA.
 https://launchpad.net/~ondrej/+archive/ubuntu/php
@@ -66,27 +68,28 @@ https://launchpad.net/~ondrej/+archive/ubuntu/php
 *Run one line at a time:*
 
 ```sh
-    sudo apt install apt-transport-https lsb-release ca-certificates
-    sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-    sudo sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
-    sudo apt update
+sudo apt install apt-transport-https lsb-release ca-certificates
+sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+sudo sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+sudo apt update
 
-    sudo apt install php7.2-fpm
+sudo apt install php7.3-fpm
 ```
 
 ##### PHP Extensions
 
 Some common extensions not installed by default:
 
-* php7.2-bz2
-* php7.2-zip
+* php7.3-bz2
+* php7.3-zip
+* php7.3-curl
+* php7.3-sqlite3
+* php-sqlite3
 * php-imagick
-* php7.2-curl
-* php7.2-sqlite3
 
 Install by
 
-`apt install php7.2-bz2 php7.2-zip php-imagick php7.2-curl php7.2-sqlite3`
+`apt install php7.3-bz2 php7.3-zip php7.3-curl php7.3-sqlite3 php-sqlite3 php-imagick`
 
 ##### Composer package
 
@@ -95,13 +98,15 @@ By instructions from https://getcomposer.org/download/
 *Run in shell:*
 
 ```sh
-    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-    php composer-setup.php
-    php -r "unlink('composer-setup.php');"
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
 
-    mv composer.phar /usr/local/bin/composer
+mv composer.phar /usr/local/bin/composer
 ```
+
+> Note: if the script fails (i.e. `Installer corrupt` ), visit getcomposer.org and follow instructions there
 
 #### 2.2.4. Nodejs, npm and Yarn
 
@@ -110,10 +115,10 @@ By instructions from https://getcomposer.org/download/
 *Run in shell:*
 
 ```sh
-    wget https://nodejs.org/dist/v10.13.0/node-v10.13.0-linux-x64.tar.xz
-    tar -xf node-v8.11.1-linux-x64.tar.xz
-    cd node-v8.11.1-linux-x64
-    cp -R ./* /usr/local/
+wget https://nodejs.org/dist/v10.13.0/node-v10.13.0-linux-x64.tar.xz
+tar -xf node-v8.11.1-linux-x64.tar.xz
+cd node-v8.11.1-linux-x64
+cp -R ./* /usr/local/
 ```
 
 *Verify*:
@@ -126,18 +131,67 @@ By instructions from https://getcomposer.org/download/
 *Run in shell:*
 
 ```sh
-    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
-    sudo apt-get update
-    sudo apt-get install yarn
+sudo apt-get update
+sudo apt-get install yarn
 ```
 
-### 2.3. Users and groups
+### 2.3. System and environment settings
 
-#### 2.3.1. Admin users
+1. Set default editor: `sudo update-alternatives --config editor`
+2. Set timezone: `sudo dpkg-reconfigure tzdata`
+3. Change hostname:
+    Edit **/etc/hostname** and `sudo hostname <hostname>` for current session
+4. Update **/etc/hosts**
+    * Add the \<hostname>.localdomain to 127.0.1.1 and \<hostname> to 127.0.0.1 rows in **/etc/hosts**
 
-1. Update sshd config
+### 2.4. Admin group and administrators
+
+1. Edit sudoers `sudo visudo`, add the following line to the group section:
+
+    ```sh
+    %admins ALL=(ALL:ALL) NOPASSWD:ALL
+    ```
+
+    > **File:** /etc/sudoers
+
+2. Create group admins
+
+    ```sh
+    sudo groupadd admins
+    ```
+
+3. Put admin user into admins group
+
+    > Note: If there is only a root account, skip this step
+
+    ```sh
+    usermod -a -G admins <admin>
+    ```
+
+    > Note: replace \<admin> with the name of the first admin account, i.e. "hlpadm"
+
+4. Add users
+    * Create the user
+    ```sh
+    sudo useradd -m -g admins -s /bin/bash <username>
+    sudo passwd <username>
+
+    ```
+    * Insert their public key into authorized_keys
+    ```sh
+    mkdir /home/<username>/.ssh
+    nano /home/<username>/.ssh/authorized_keys # copy key
+    chmod 700 /home/<username>/.ssh
+    chmod 644 /home/<username>/.ssh/authorized_keys
+    chown <username>:admins -R /home/<username>/.ssh
+    ```
+
+5. Try to log in with a newly added user
+
+6. From the new user: update sshd config
 
     ```sh
         PermitRootLogin no
@@ -146,41 +200,7 @@ By instructions from https://getcomposer.org/download/
 
     > **File:**: /etc/ssh/sshd_config
 
-2. Restart sshd `service sshd restart`
-
-3. Edit sudoers `sudo visudo`, add the following line to the group section:
-
-    ```sh
-        %admins ALL=(ALL:ALL) NOPASSWD:ALL
-    ```
-
-    > **File:** /etc/sudoers
-
-4. Create group admins
-
-    ```sh
-        sudo groupadd admins
-    ```
-
-5. Put admin user into admins group (replace *admin* with the name of the actual admin account, i.e. "hlpadm")
-
-    ```sh
-        usermod -a -G admins <admin>
-    ```
-
-6. Add users
-
-    ```sh
-        sudo useradd -m -g admins -s /bin/bash <username>
-        sudo passwd <username>
-    ```
-
-### 2.4. System and environment settings
-
-1. Set default editor: `sudo update-alternatives --config editor`
-2. Set timezone: `sudo dpkg-reconfigure tzdata`
-3. Change hostname:
-    Edit **/etc/hostname** and `sudo hostname <hostname>` for current session
+7. Restart sshd `service sshd restart`
 
 ### 2.5. Virtualmin
 
@@ -188,73 +208,76 @@ Download and run the install script.
 *Run in shell:*
 
 ```sh
-    wget http://software.virtualmin.com/gpl/scripts/install.sh
-    sudo /bin/sh install.sh --hostname <hostname>`
+wget http://software.virtualmin.com/gpl/scripts/install.sh
+sudo /bin/sh install.sh --hostname <hostname>`
 ```
+
+> Note: Replace \<hostname> with your hostname provided in your DNS.
 
 #### 2.5.1. Configure Webmin and Virtualmin
 
-1. Navigate to https://hostname:10000 and follow the post installation wizard
+1. Navigate to [https://hostname:10000](https://hostname:10000) and follow the post installation wizard
 
 2. Configuration
 
-Follow this list, in order:
+    Follow this list, in order:
 
-* Webmin
+    * Webmin
 
-  * System
+    * System
 
-    * Bootup and Shutdown
+        * Bootup and Shutdown
 
-      * Turn off Start at boot on proftpd
-      * Turn off Start at boot on dovecot and dovecot.service
-      * Turn off Start at boot on php7.0-fpm and php7.0-fpm.service
+        * Turn off Start at boot on proftpd
+        * Turn off Start at boot on dovecot and dovecot.service
+        * Turn off Start at boot on php7.0-fpm and php7.0-fpm.service
 
-    * Disk Quotas
-      * Disable quotas
+        * Disk Quotas
+        * Disable quotas
 
-    * Software packages updates
-      * Check for every day
-      * Set email
-      * Install security updates
+        * Software packages updates
+        * Check for every day
+        * Set email
+        * Install security updates
 
-* Virtualmin
+    * Virtualmin
 
-  * System settings
+    * System settings
 
-    * Features and plugins
-      * Remove ProFTPD
-      * Remove DAV login
-      * Remove Mail
-      * Remove Spam filtering
-      * Remove Virus scanning
-      * Remove BIND
-      * Add SSL (and check default)
+        * Features and plugins
+        * Remove ProFTPD
+        * Remove DAV login
+        * Remove Mail
+        * Remove Spam filtering
+        * Remove Virus scanning
+        * Remove BIND
+        * Add SSL (and check default)
 
-    * Virtualmin configuration
-      * User Interface settings
-        * Columns to show: Domain name, Username, SSL website
-      * Default for new domains
-        * Password field type: randomly generated password
-      * SSL Settings
-        * Request Let's Encrypt certificate at domain creation
+        * Virtualmin configuration
+        * User Interface settings
+            * Columns to show: Domain name, Username, SSL website
+        * Default for new domains
+            * Password field type: randomly generated password
+        * SSL Settings
+            * Request Let's Encrypt certificate at domain creation
 
-    * Server templates
-      * Default settings
-                Reomove www. and mail. aliases from Apache website
+        * Server templates
+        * Default settings
+                    Reomove www. and mail. aliases from Apache website
 
-  * Create virtual server
-    * Create a virtual server with the domain - name pointing to Virtualmin
+#### 2.5.2. Get a SSL certificate for the admin page
 
-* Webmin
+1. Create a new virtual server with \<hostname> as domain name
 
-  * Webmin configuration
+2. Create the SSL certificate
 
-    * SSL Settings - Let's Encrypt
-      * Insert hostname for certificate
-      * Chose a different Apache virtual host (the one earlier created)
+    **Navigate to**
+    * Webmin
+        * Webmin configuration
+            * SSL Encryption
+                * Let's Encrypt tab
 
-> **File:** crontab
+    Insert \<hostname> for the certificate and chose the option _Chose a different Apache virtual host_ (select the the one creatd in previous step) and press button **Request certificate**
 
 ### 2.6. Backup
 
@@ -277,25 +300,28 @@ Follow this list, in order:
 If gitlab was installed, this is how to backup it:
 
 1. Edit /etc/gitlab/gitlab.rb
-    ```s
-        gitlab_rails['manage_backup_path'] = true
-        gitlab_rails['backup_path'] = "/mnt/backup/gitlab"
-        gitlab_rails['backup_archive_permissions'] = 0644
-        gitlab_rails['backup_keep_time'] = 86400 # 1 day, because we are setting up backup rotate later
+    ```sh
+    gitlab_rails['manage_backup_path'] = true
+    gitlab_rails['backup_path'] = "/mnt/backup/gitlab"
+    gitlab_rails['backup_archive_permissions'] = 0644
+    gitlab_rails['backup_keep_time'] = 86400 # 1 day, because we are setting up backup rotate later
     ```
 2. Test gitlab backup: `sudo gitlab-rake gitlab:backup:create`
 3. Create destination folder `mkdir /mnt/backup/gitlab`
 4. Set permissions `chmod 700`, `chown git:admins`
 5. Parent folder /mnt/backup must have +x flag
+6. As root user, update crontab
 
-```crontab
-# gitlab config
-00 04 * * *  umask 0077; tar cfz /mnt/backup/gitlab/$(date "+etc-gitlab-\%s.tgz") -C / etc/gitlab
+    ```sh
+    # gitlab config
+    00 04 * * *  umask 0077; tar cfz /mnt/backup/gitlab/$(date "+etc-gitlab-\%s.tgz") -C / etc/gitlab
 
-# gitlab repositories
-30 04 * * * /opt/gitlab/bin/gitlab-rake gitlab:backup:create CRON=1
+    # gitlab repositories
+    30 04 * * * /opt/gitlab/bin/gitlab-rake gitlab:backup:create CRON=1
 
-```
+    ```
+
+    > **File:** crontab
 
 #### 2.6.3. Virtualmin
 
@@ -303,13 +329,13 @@ If gitlab was installed, this is how to backup it:
 2. Navigate to virtualmin Backup and Restore > Scheduled Backups > Add new backup schedule
 3. Configure new backup as in the picture
     ![virtualmin-backup.png](virtualmin-backup.png)
-4. Set Schedule and reporting **Email backup report to** to *op* email and **Scheduled backup time** to *Simple schedule to daily*
+4. Set Schedule and reporting **Email backup report to** to \<op-email> and **Scheduled backup time** to *Simple schedule to daily*
 
 ### 2.7. CRON jobs
 
-### 2.7.1. Rkhunter
+Run `crontab -e` to add cron job entries
 
-Run `crontab -e` to create a cron job for rkhunter
+### 2.7.1. Rkhunter
 
 ```sh
     0 4 * * * rkhunter --cronjob --update --quiet
