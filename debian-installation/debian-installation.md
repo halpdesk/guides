@@ -86,10 +86,12 @@ Some common extensions not installed by default:
 * php7.3-sqlite3
 * php-sqlite3
 * php-imagick
+* php7.3-dom
+* php7.3-xml
 
 Install by
 
-`apt install php7.3-bz2 php7.3-zip php7.3-curl php7.3-sqlite3 php-sqlite3 php-imagick`
+`apt install php7.3-bz2 php7.3-zip php7.3-curl php7.3-sqlite3 php-sqlite3 php-imagick php7.3-dom php7.3-xml`
 
 ##### Composer package
 
@@ -115,9 +117,9 @@ mv composer.phar /usr/local/bin/composer
 *Run in shell:*
 
 ```sh
-wget https://nodejs.org/dist/v10.13.0/node-v10.13.0-linux-x64.tar.xz
-tar -xf node-v8.11.1-linux-x64.tar.xz
-cd node-v8.11.1-linux-x64
+wget https://nodejs.org/dist/v10.16.0/node-v10.16.0-linux-x64.tar.xz
+tar -xf node-v10.16.0-linux-x64.tar.xz
+cd node-v10.16.0-linux-x64
 cp -R ./* /usr/local/
 ```
 
@@ -134,8 +136,8 @@ cp -R ./* /usr/local/
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
-sudo apt-get update
-sudo apt-get install yarn
+sudo apt update
+sudo apt install yarn
 ```
 
 ### 2.3. System and environment settings
@@ -227,43 +229,51 @@ sudo /bin/sh install.sh --hostname <hostname>`
     * System
 
         * Bootup and Shutdown
-
-        * Turn off Start at boot on proftpd
-        * Turn off Start at boot on dovecot and dovecot.service
-        * Turn off Start at boot on php7.0-fpm and php7.0-fpm.service
+            * Turn off Start at boot on proftpd
+            * Turn off Start at boot on dovecot and dovecot.service
+            * Turn off Start at boot on php7.0-fpm and php7.0-fpm.service
 
         * Disk Quotas
-        * Disable quotas
+            * Disable quotas
 
         * Software packages updates
-        * Check for every day
-        * Set email
-        * Install security updates
+            * Check for every day
+            * Set email
+            * Install security updates
 
     * Virtualmin
 
     * System settings
 
         * Features and plugins
-        * Remove ProFTPD
-        * Remove DAV login
-        * Remove Mail
-        * Remove Spam filtering
-        * Remove Virus scanning
-        * Remove BIND
-        * Add SSL (and check default)
+            * Check these and check default column
+                * Apache Website
+                * Webalizer report
+                * SSL website
+                * Log file rotation
+                * MySQL database
+                * Webmin login
+                * AWstats reporting
+                * Protected web directories
+            * Uncheck everything else, i.e.
+                * ProFTPD
+                * DAV login
+                * Mail
+                * Spam filtering
+                * Virus scanning
+                * BIND
 
         * Virtualmin configuration
-        * User Interface settings
-            * Columns to show: Domain name, Username, SSL website
-        * Default for new domains
-            * Password field type: randomly generated password
-        * SSL Settings
-            * Request Let's Encrypt certificate at domain creation
+            * User Interface settings
+                * Columns (and Feature columns) to show: Domain name, Username, SSL website
+            * Default for new domains
+                * Password field type: randomly generated password
+            * SSL Settings
+                * Request Let's Encrypt certificate at domain creation time
 
         * Server templates
-        * Default settings
-                    Reomove www. and mail. aliases from Apache website
+            * Default settings (Click on Apache link)
+                * Remove www. and mail. aliases from Apache website
 
 #### 2.5.2. Get a SSL certificate for the admin page
 
