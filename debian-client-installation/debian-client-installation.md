@@ -76,6 +76,7 @@ This document is an installation guide for Debian 10 on developer machine.
     clamav-deamon \
     clamav \
     rkhunter \
+    rsync \
     ncdu \
     xz-utils \
     htop \
@@ -112,6 +113,8 @@ This document is an installation guide for Debian 10 on developer machine.
       ```
 
     4.2. NVIDIA drivers
+
+      First, see [[nvidia-driver]]
 
       4.2.1. Install nvidia detect:
 
@@ -213,3 +216,26 @@ This document is an installation guide for Debian 10 on developer machine.
 
     See up-to-date installation instructions here
     [https://spotify.com/se/download/linux/](spotify.com/se/download/linux/)
+
+    5.8. MPV
+
+    Download **.deb** pacakge from [https://mpv.io/installation/](https://mpv.io/installation/)
+
+    ```sh
+    dpkg -i discord-0.0.9.deb
+    ```
+
+    Or add repositories: add below contents to **/apt/sourecs.list.d/mpv.list**
+
+    ```sh
+    deb [arch=amd64] https://non-gnu.uvt.nl/debian buster uvt
+    ```
+
+    Then download and add key to repository
+
+    ```sh
+    wget https://non-gnu.uvt.nl/debian/uvt_key.asc
+    apt-key add - < uvt_key.asc
+    ```
+
+    > VLC is available throught the standard contrib repositories if you would rather use VLC.
