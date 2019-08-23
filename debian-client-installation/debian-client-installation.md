@@ -76,6 +76,7 @@ This document is an installation guide for Debian 10 on developer machine.
     clamav-deamon \
     clamav \
     rkhunter \
+    rsync \
     ncdu \
     xz-utils \
     htop \
@@ -160,7 +161,7 @@ This document is an installation guide for Debian 10 on developer machine.
 
 5. Install other packages
 
-    5.1. Web browser
+    5.1. Google Hhrome
 
     Download **.deb** package from [https://www.google.com/chrome/](https://www.google.com/chrome/)
 
@@ -184,20 +185,55 @@ This document is an installation guide for Debian 10 on developer machine.
     dpkg -i discord-0.0.9.deb
     ```
 
-    5.4. Docker
+    5.4. Slack
 
-    See up-to-date installation structions here
-    [https://docs.docker.com/install/linux/docker-ce/debian/](https://docs.docker.com/install/linux/docker-ce/debian/)
-
-    5.3. Slack
-
-    Download **.deb** pacakge from [https://slack.com/intl/en-se/downloads/linux](https://slack.com/intl/en-se/downloads/linux)
+    Download **.deb** pacakge from [https://discordapp.com/](https://discordapp.com/)
 
     ```sh
-    dpkg -i slack-desktop-4.0.2-amd64.deb
+    dpkg -i discord-0.0.9.deb
     ```
 
-    5.4. Docker
+    5.5. Docker
 
-    See up-to-date installation structions here
+    See up-to-date installation instructions here
     [https://docs.docker.com/install/linux/docker-ce/debian/](https://docs.docker.com/install/linux/docker-ce/debian/)
+
+    5.6. Postman
+
+    Download **.deb** pacakge from [https://www.getpostman.com/downloads/](https://www.getpostman.com/downloads/)
+
+    ```sh
+    mkdir ~/Apps
+    mv Postman-linux-x64-7.3.6.tar.gz ~/Apps
+    cd ~/Apps
+    tar xvf Postman-linux-x64-7.3.6.tar.gz
+    sudo ln -s $(cd ~; pwd)/Apps/Postman/Postman /usr/local/bin/postman
+    ```
+
+    5.7. Spotify
+
+    See up-to-date installation instructions here
+    [https://spotify.com/se/download/linux/](spotify.com/se/download/linux/)
+
+    5.7. MPV
+
+    Download **.deb** pacakge from [https://mpv.io/installation/](https://mpv.io/installation/)
+
+    ```sh
+    dpkg -i discord-0.0.9.deb
+    ```
+
+    Or add repositories: add below contents to **/apt/sourecs.list.d/mpv.list**
+
+    ```sh
+    deb [arch=amd64] https://non-gnu.uvt.nl/debian buster uvt
+    ```
+
+    Then download and add key to repository
+
+    ```sh
+    wget https://non-gnu.uvt.nl/debian/uvt_key.asc
+    apt-key add - < uvt_key.asc
+    ```
+
+    > VLC is available throught the standard contrib repositories if you would rather use VLC.
